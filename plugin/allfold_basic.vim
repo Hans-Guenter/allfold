@@ -768,6 +768,8 @@ augroup allfold_setup
         \   call <SID>AFB_setup()
 augroup END
 
+call s:AFB_setup()
+
 "}}}
 "=============================================================================
 "                     Buffer/File I/O Functions
