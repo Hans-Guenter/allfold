@@ -5,7 +5,7 @@
 ============================================================================
 Section 1:                       TUTORIAL
 ============================================================================
-
+                                                                        *allfold*
 Allfold is a VIM Script which implements an ALL command (somewhat similar to
 the ALL command in IBM VM's XEDIT editor ) by using the folding facility in
 VIM.  Hence the name "allfold".
@@ -22,21 +22,21 @@ Using this script one would only need to type the following command,
 assuming this script had been sourced in, and every line containing 
 "counter" would be displayed with all the non-relevant text folded away.
 "AFP" is a mnemonic for "All Fold Pattern"
-
-:AFP counter
-
+>
+        :AFP counter
+<
 If one determined that the use of the counter variables needed to be
 displayed with a little more context then the following command would add
 2 lines above and 3 lines below each line containing the string "counter".
-
-:AFP counter 2 3
-
+ >
+        :AFP counter 2 3
+<
 Now one might also want to check not only the counters, but also on all
 the "total" variables.  All lines containing "total" could be added to
 the viewed lines with the same additional context by the command:
-
-:AFP -or total 2 3
-
+ >
+        :AFP -or total 2 3
+<
 Suppose now that it was necessary to view all of a function that printed a
 summary report of counters and totals. A command with a slightly different
 form would be needed.  This script supports a different command "All Fold
@@ -48,26 +48,26 @@ the block(s) delimited by a line matching one pattern which starts the function
 and another line matching a second pattern at the end of the function.
 Notice that the space after "void" has to be quoted with a backslash 
 according to VIM rules.
-
-:AFB -or ^void\ print_counter_total_summary ^}$
-
+ >
+        :AFB -or ^void\ print_counter_total_summary ^}$
+<
 Suppose after inspecting the displayed code it has become obvious that
 the counter/total variables used for overall grand totals require a
 closer view.  The following command will limit the lines viewed to
 those containing the string "grand".
-
-:AFP -and grand
-
+ >
+        :AFP -and grand
+<
 When satisfied with the view of the grand totals and counters, one could 
 revert to the previous view by using the following undo command.
-
-:AFU
-
+ >
+        :AFU
+<
 Finally after viewing the interesting lines of the file all of it could
 be viewed again with the following command "All Fold Remove".
-
-:AFR
-
+ >
+        :AFR
+<
 --------------------------------------------
 NOTE: Following applies only to full version
 --------------------------------------------
@@ -79,15 +79,15 @@ inclusion of allfold commands within the file itself where this kind of
 repetitive view is required.  To load all the allfold commands for a
 certain named view use the following command where the view name is
 "view_all_counter_totals" and the "." means the current file.
-
-:AFV view_all_counter_totals .
-
+ >
+        :AFV view_all_counter_totals .
+<
 To save retyping the commands to manually create the view it would have
 been possible to issue the follow command to save the allfold commands
 used to build up the view for later re-use:
-
-:AFS view_all_counter_totals .
-
+ >
+        :AFS view_all_counter_totals .
+<
 ============================================================================
 Section 2:                Basic and Full Versions
 ============================================================================
@@ -117,7 +117,7 @@ AFL, AFQ or AFC commands.
 Section 3:                   Command Descriptions
 ============================================================================
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFB*
 :AFB [ -options ] start_pattern end_pattern [ before [ after ] ]
 
 Show "B"locks of lines delimited by lines matching start_pattern and
@@ -125,8 +125,9 @@ end_pattern and fold away other lines.  Before and after are numbers
 indicating how many extra lines should be included before and after the
 blocks to provide extra context.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFC*
 :AFC [ -options ] buffer_name                   NOTE: Requires Full Version
+
 
 "C"opy selected lines to a separate buffer and display in a new window.
 The option "-uns" copies the unselected lines to the separate buffer.
@@ -135,13 +136,13 @@ The option "-cut" cuts the copied lines from the original buffer.
 See the section "File Naming Shortcuts" on conventions for providing a
 buffer_name parameter.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFF*
 :AFF
 
 "F"reshen (refresh) the display by re-valuating lines to be displayed 
 after making changes to buffer.  The saved commands will be reapplied.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFG*
 :AFG [ -options ] register_name  [ map_segment_length ]
 
 "G"rab the current view command list or line selection map and save it in a
@@ -169,7 +170,7 @@ AFM, and AFV commands with this command by doing a little extra manual work.
 Also one may use this command as a primitive function to interface with the
 allfold_basic script when writing custom scripts.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFH*
 :AFH
 
 Check if the buffer "H"as any previously defined folds.  A message indicating
@@ -177,7 +178,7 @@ whether or not folds were found is displayed.  This command allows one to
 check for previously existing folds that might be erased before issuing any
 allfold commands.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFI*
 :AFI
 
 "I"nvert the current file view by folding away the currently visible lines
@@ -185,7 +186,7 @@ and displaying the lines currently folded away.  Logically inverts the
 map controlling the display. An AFI command as the first command issued
 for a buffer folds away all the lines.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFL*
 :AFL [ -options ] list_buffer                   NOTE: Requires Full Version
 
 Edit the "L"ist of commands making up the current view in a buffer named
@@ -198,7 +199,7 @@ command chain to be a worksheet for the current file.
 
 See "Views" section below for more information on use of the AFL command.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFM*
 :AFM [ -options ] map_name [ map_file ]         NOTE: Requires Full Version
 
 Search the file "map_file" for lines defining a "M"ap named "map_name" and read
@@ -209,14 +210,14 @@ does not equal the length of file then an error message is given.
 See the section "File Naming Shortcuts" on conventions for providing a
 map_file parameter.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFP*
 :AFP [ -options ] pattern [ before [ after ] ]
 
 Show all lines matching "P"attern and fold away other lines.  Before and after
 are numbers indicating how many extra lines should be included before and
 after the selected lines to provide extra context.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFQ*
 :AFQ                                            NOTE: Requires Full Version
 
 Fold a file with begin line markers.  The current buffer must contain a 
@@ -227,12 +228,12 @@ produced by any other means.  Once the AFQ command has folded the file,
 an "AFS -map" can save just the map for reuse without relying on the begin
 line markers being in the file.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFR*
 :AFR 
 
 "R"emove all of the allfold operations and restore normal file view.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFS*
 :AFS [ -options ] view_map_name [ view_map_file 
      [ start_line [ begin_view_map [ end_view_map ] ] ] ]
 
@@ -274,7 +275,7 @@ command apply with this option since a file is always produced.  Any old file
 with map_file as the name is replaced automatically.  Also the view_map_name
 is only present as a placeholder for this option.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFU*
 :AFU 
 
 "U"ndo the previous AFP, AFB, AFV, AFM, AFG, or AFI command defining the
@@ -282,7 +283,7 @@ current view of the file. Please refer to the Views section in this document
 that describe the concept of a "view" and its implications on issuing
 commands.
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------- *:AFV*
 :AFV [ -options ] view_name [ view_file ]       NOTE: Requires Full Version
 
 Search the file "view_file" for lines defining a "V"iew named "view_name"
@@ -675,3 +676,4 @@ if g:AFF_libdir contained
 ============================================================================
                               The End.
 ============================================================================
+ vim:tw=78:sw=4:ts=8:ft=help:norl:
