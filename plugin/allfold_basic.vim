@@ -64,7 +64,7 @@ let g:AFB_vcmd_sep_match='\n'
 " Returns: Boolean indicating if startline was folded out of view.
 "
 function! AFB_markmap_pattern(pattern,before,after)
-	normal zE
+	sil! normal zE
 	normal 1G0
 	let lastline=line("$")
 	while search(a:pattern, "W") > 0
@@ -89,7 +89,7 @@ endfunction
 " Returns: Boolean indicating if startline was folded out of view.
 "
 function! AFB_markmap_block(start_pattern,end_pattern,before,after)
-	normal zE
+	sil! normal zE
 	normal 1G0
 	let lastline=line("$")
 	let lastline0=lastline-1
@@ -121,7 +121,7 @@ function! AFB_fold_markmap(startline,cmdopts)
 		set foldmethod=manual
 	endif
 	normal 1G0
-	normal zE
+	sil! normal zE
 	let sl_dec=a:startline-1
 	let startline_folded=0
 	let startmatching=0
@@ -420,7 +420,7 @@ function! AFB_fold_remove()
 	if exists("b:wks_for_buffer")
 		exe bufwinnr(b:wks_for_buffer)."wincmd w"
 	endif
-	normal zE
+	sil! normal zE
 	let startline=line(".")
 	set foldmethod&
 	if exists( "b:save_foldlevel" )
