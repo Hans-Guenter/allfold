@@ -293,6 +293,8 @@ function! AFB_fold_pattern(...)
 	if cmdopts!=''
 		let cmdstr=cmdstr.cmdopts.' '
 	endif
+  call histadd("/", pattern)
+  let @/=pattern
 	let pattern=substitute(pattern," ",'\\ ',"g")
 	let cmdstr=cmdstr.pattern.' '.before.' '.after
 	call AFB_finish_newcmd(startline,cmdopts,cmdstr)
