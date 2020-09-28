@@ -430,6 +430,9 @@ function! AFB_fold_remove()
 	endif
 	exe "normal ".startline."Gz."
 	let b:af_done=0
+	if exists(":FastFoldUpdate") == 2
+		FastFoldUpdate
+	endif
 	echo "Allfold operations removed"
 endfunction
 
