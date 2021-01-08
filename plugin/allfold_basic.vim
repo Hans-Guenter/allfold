@@ -8,6 +8,17 @@
 " Last Change: 2003-02-26
 " Written By: Marion W. Berryman  mwberryman-at-copper-dot-net
 "
+" Last Change: 28.09.2020
+" Written By:  Hans-Günter Simon
+" - wrap setup in function s:AFB_setup to allow calling by autocommands
+" - add autocommands
+" - make normal zE calls silent
+" - add patterns to history
+"
+" Last Change: 08.01.2021
+" Written By:  Hans-Günter Simon
+" - prepend calls to changing foldmethod of not manual
+"   (:fold, :normal zE change fold markers in file)
 "
 " WARNING! These functions erase all manual folds within a file before
 "          setting up their own manual folding scheme!!!
@@ -32,14 +43,16 @@ endif
 " Initialize buffer global variables.
 "
 function! s:AFB_setup()
-if !exists( "b:af_done" )
-	let b:af_done = 0
-	let b:kx_map=''
-	let b:kx_map_2=''
-	let b:cmd_done_list=''
-	let b:cmds_after_init_map=0   " Count of AFP, AFB, and AFI commands
-                                 " since the map was last initialized
-endif
+	if !exists( "b:af_done" )
+		let b:af_done = 0
+		let b:kx_map=''
+		let b:kx_map_2=''
+		let b:cmd_done_list=''
+		let b:cmds_after_init_map=0   " Count of AFP, AFB, and AFI commands
+	                               	" since the map was last initialized
+	else
+		let b:af_done = 0
+	endif
 endf
 
 "
@@ -64,6 +77,10 @@ let g:AFB_vcmd_sep_match='\n'
 " Returns: Boolean indicating if startline was folded out of view.
 "
 function! AFB_markmap_pattern(pattern,before,after)
+	if (! b:af_done)
+		let b:save_foldlevel=&foldlevel
+		setlocal foldmethod=manual
+	endif
 	sil! normal zE
 	normal 1G0
 	let lastline=line("$")
@@ -89,6 +106,10 @@ endfunction
 " Returns: Boolean indicating if startline was folded out of view.
 "
 function! AFB_markmap_block(start_pattern,end_pattern,before,after)
+	if (! b:af_done)
+		let b:save_foldlevel=&foldlevel
+		setlocal foldmethod=manual
+	endif
 	sil! normal zE
 	normal 1G0
 	let lastline=line("$")
@@ -118,7 +139,7 @@ endfunction
 function! AFB_fold_markmap(startline,cmdopts)
 	if (! b:af_done)
 		let b:save_foldlevel=&foldlevel
-		set foldmethod=manual
+		setlocal foldmethod=manual
 	endif
 	normal 1G0
 	sil! normal zE
@@ -422,11 +443,15 @@ function! AFB_fold_remove()
 	if exists("b:wks_for_buffer")
 		exe bufwinnr(b:wks_for_buffer)."wincmd w"
 	endif
+	if (! b:af_done)
+		let b:save_foldlevel=&foldlevel
+		setlocal foldmethod=manual
+	endif
 	sil! normal zE
 	let startline=line(".")
-	set foldmethod&
+	setlocal foldmethod&
 	if exists( "b:save_foldlevel" )
-		exe "set foldlevel=".b:save_foldlevel
+		exe "setlocal foldlevel=".b:save_foldlevel
 	endif
 	exe "normal ".startline."Gz."
 	let b:af_done=0
