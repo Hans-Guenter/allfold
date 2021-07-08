@@ -17,8 +17,13 @@
 "
 " Last Change: 08.01.2021
 " Written By:  Hans-Günter Simon
-" - prepend calls to changing foldmethod of not manual
-"   (:fold, :normal zE change fold markers in file)
+" - prepend calls to changing foldmethod if not manual
+"   (:fold, :normal zE change fold markers in file for fdm=marker)
+"
+" Last Change: 08.07.2021
+" Written By:  Hans-Günter Simon
+" - Introduce command abbreviation AFP appending current search pattern
+"   with escaped <space>s
 "
 " WARNING! These functions erase all manual folds within a file before
 "          setting up their own manual folding scheme!!!
@@ -814,6 +819,7 @@ command! -nargs=+ AFG    :call AFB_grab_view_map(<f-args>)
 command! -nargs=0 AFH    :call AFB_has_folds()
 command! -nargs=? AFI    :call AFB_invert(<f-args>)
 command! -nargs=+ AFP    :call AFB_fold_pattern(<f-args>)
+cnoreab AFP AFP <c-r>=escape(@/,' ')<cr>
 command! -nargs=0 AFR    :call AFB_fold_remove()
 command! -nargs=0 AFU    :call AFB_undo_prev()
 
